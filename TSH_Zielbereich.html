@@ -106,7 +106,7 @@
     padding: 1.8rem;
     white-space: pre-line;
     font-size: 0.95rem;
-    color: #003366;
+    color: #e916166;
     text-align: left;
     min-height: 120px;
     z-index: 10;
@@ -201,7 +201,7 @@
 
       let tsh_zielbereich_final = "";
 
-      const initial_eval = await frage("Hat die initiale Response-Evaluation schon stattgefunden?", ["Nein", "Ja"]);
+      const initial_eval = await frage("Hat eine Response-Evaluation bereits stattgefunden (regulär 6-12 Monate nach initialer Therapie)?", ["Nein", "Ja"]);
 
       if (initial_eval === "Nein") {
         const typ = await frage("Follikuläres oder papilläres Schilddrüsenkarzinom?", ["Papillär", "Follikulär"]);
@@ -305,9 +305,13 @@
 
         // Bestimmung der Response-Kategorie
       } else {
-        const bild = await frage("Strukturelle/funktionelle Raumforderung in der Bildgebung?", ["Nein", "Ja"]);
+        const bild = await frage("Gibt es strukturelle/funktionelle Raumforderungen in der Bildgebung (Aufnahme von Iod in der RIT bzw. [¹⁸F]FDG in der PET/CT), die einem Schilddrüsenkrebs zuzuordnen sind?", ["Nein", "Ja"]);
         let schwach = "", tg_suppr = "", tg_stim = "", tak = "";
-        if (bild === "Nein") schwach = await frage("Schwache Radioiodspeicherung im SD-Bett?", ["Nein", "Ja"]);
+        document.getElementById("infos").textContent =
+            "Falls im Verlauf mehrere Ganzkörperszintigramme durchgeführt wurden bezieht sich die Frage auf das aktuelle Ganzkörperszintigramm.";
+            document.getElementById("infos").style.display = "block";
+        if (bild === "Nein") schwach = await frage("Lag eine schwache Radioiodspeicherung im SD-Bett vor?", ["Nein", "Ja"]);
+        document.getElementById("infos").style.display = "none";
         tg_suppr = await frage("Tg unter TSH-Unterdrückung?", ["< 0.2 ng/ml", "0.2 - 1 ng/ml", ">= 1 ng/ml", "Unbekannt"]);
         tg_stim = await frage("Tg unter TSH-Stimulation?", ["< 1 ng/ml", "1 - 10 ng/ml", ">= 10 ng/ml", "Unbekannt"]);
         tak = await frage("TAK-Werte?", ["negativ", "stabil oder fallend", "steigend"]);
@@ -351,3 +355,4 @@
   </script>
 </body>
 </html>
+
